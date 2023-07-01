@@ -25,3 +25,9 @@ public:
         
     }
 };
+int main(){
+     vector<int>cookies= [8,15,10,20,8];
+    int k=2;
+    Solution s;
+    cout<<s.distributeCookies(cookies,k);
+}
