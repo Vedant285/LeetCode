@@ -11,9 +11,12 @@ public:
         if(dp[idx][target]!=-1){
             return dp[idx][target];
         }
-        int take=solve(0,nums,target-nums[idx],dp);
-        int nott=solve(idx+1,nums,target,dp);
-        return dp[idx][target]=take+nott;
+        int result=0;
+        for(int i=idx;i<n;i++){
+            int a=solve(0,nums,target-nums[i],dp);
+            result+=a;
+        }
+        return dp[idx][target]=result;
     }
     int combinationSum4(vector<int>& nums, int target) {
         n=nums.size();
