@@ -1,4 +1,3 @@
-// RADHE RADHE 
 class Solution {
 public:
     int numFactoredBinaryTrees(vector<int>& arr) {
@@ -6,20 +5,18 @@ public:
         sort(arr.begin(),arr.end());
         unordered_map<int,long long>mp;
         for(int i=0;i<n;i++){
-            int root=arr[i];
-            mp[root]=1;
+            mp[arr[i]]=1;
             for(int j=0;j<i;j++){
-                int lc=arr[j];
-                if(root%lc==0 && mp.find(arr[i]/lc)!=mp.end()){
-                    mp[root]+=mp[lc]*mp[arr[i]/lc];
+                if(arr[i]%arr[j]==0 && mp.find(arr[i]/arr[j])!=mp.end()){
+                    mp[arr[i]]+=mp[arr[j]]*mp[arr[i]/arr[j]];
                 }
             }
         }
-        long long result=0;
+        int res=0;
         int mod=1e9+7;
-        for(auto &it:mp){
-            result=(result+it.second)%mod;
+        for(auto it:mp){
+            res=(res+it.second)%mod;
         }
-        return result;
+        return res;
     }
 };
