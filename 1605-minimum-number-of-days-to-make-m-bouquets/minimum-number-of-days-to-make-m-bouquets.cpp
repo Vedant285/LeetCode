@@ -24,10 +24,10 @@ public:
         }
         ll s = *min_element(bloomDay.begin(), bloomDay.end());
         ll l = *max_element(bloomDay.begin(), bloomDay.end());
-        while( s < l) {
+        while( s <= l) {
             ll mid = s + ( l - s )/2;
             if (check(bloomDay, m, k, mid) ) {
-                l = mid ;
+                l = mid -1 ;
             }
             else {
                 s = mid + 1;
