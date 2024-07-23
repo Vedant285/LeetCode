@@ -5,7 +5,7 @@ public:
         int l = 0, r = 0, zero = 0;
         while (r < nums.size()) {
             if (nums[r] == 0) zero++;
-            while (zero > k) {
+            if (zero > k) {
                 if(nums[l] == 0) {
                     zero--;
                 }
@@ -13,8 +13,8 @@ public:
             }
             if(zero <= k) {
                 maxi = max(maxi, r - l + 1);
-                r++;
             }
+            r++;
         }
         return maxi;
     }
