@@ -11,20 +11,21 @@ public:
     }
     int change(int amount, vector<int>& arr) {
         int n = arr.size();
-        vector<vector<long>> dp(n, vector<long>(amount + 1, 0));
-
+        //vector<vector<long>> dp(n, vector<long>(amount + 1, 0));
+        vector<int> prev(amount + 1, 0), curr(amount + 1, 0);
         for (int i = 0; i <= amount; i++) {
-            if (i % arr[0] == 0) dp[0][i] = 1;
+            if (i % arr[0] == 0) prev[i] = 1;
         }
 
         for (int i = 1; i < n; i++) {
             for (int t = 0; t <= amount; t++) {
-                int nottake = dp[i - 1][t];
+                int nottake = prev[t];
                 int take = 0;
-                if (arr[i] <= t) take = dp[i][t - arr[i]];
-                dp[i][t] = take + nottake;
+                if (arr[i] <= t) take = curr[t - arr[i]];
+                curr[t] = take + nottake;
             }
+            prev = curr;
         }
-        return dp[n - 1][amount];
+        return prev[amount];
     }
 };
