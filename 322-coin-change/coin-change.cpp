@@ -13,11 +13,11 @@ public:
 
                 int nottake = prev[t];
                 int take = 1e9;
-                if(arr[i] <= t) take = 1 + curr[t - arr[i]];
+                if(arr[i] <= t) take = 1 + prev[t - arr[i]];
 
-                curr[t] = min(take, nottake);
+                prev[t] = min(take, nottake);
             }
-            prev = curr;
+            //prev = curr;
         }
 
         if (prev[amo] >= 1e9) return -1;
