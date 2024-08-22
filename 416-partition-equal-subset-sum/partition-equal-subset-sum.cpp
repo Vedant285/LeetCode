@@ -17,19 +17,20 @@ public:
         if(sum % 2 == 1) return false;
         int n = size(nums);
         int k = sum / 2;
-        vector<vector<bool>>dp(n, vector<bool>(k + 1, false));
-
-        for (int i = 0; i < n; i++) dp[i][0] = true;
-        if(nums[0] <= k) dp[0][nums[0]] = true;
+        //vector<vector<bool>>dp(n, vector<bool>(k + 1, false));
+        vector<int> prev(k + 1, 0), curr(k + 1, 0);
+        prev[0] = true;
+        if(nums[0] <= k) prev[nums[0]] = true;
 
         for (int i = 1; i < n; i++) {
             for (int j = 1; j <= k; j++) {
-                int nottake = dp[i - 1][j];
+                int nottake = prev[j];
                 int take = false;
-                if(nums[i] <= j) take = dp[i - 1][j - nums[i]];
-                dp[i][j] = nottake | take;
+                if(nums[i] <= j) take = prev[j - nums[i]];
+                curr[j] = nottake | take;
             }
+            prev = curr;
         }
-        return dp[n - 1][k];
+        return prev[k];
     }
 };
