@@ -25,8 +25,39 @@ public:
     int cherryPickup(vector<vector<int>>& grid) {
         
         int n = grid.size(), m = size(grid[0]);
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(m + 1, vector<int>(m + 1, -1)));
+        int dp[n][m][m];
+        for (int j1 = 0; j1 < m; j1++) {
+            for (int j2 = 0; j2 < m; j2++) {
+                if (j1 == j2) dp[n - 1][j1][j2] = grid[n - 1][j1];
+                else dp[n - 1][j1][j2] = grid[n - 1][j1] + grid[n - 1][j2];
+            }
+        }
+        for (int r = n - 2; r >= 0; r--) {
+            for (int c1 = 0; c1 < m; c1++) {
+                for (int c2 = 0; c2 < m; c2++) {
+                    int maxi = 0;
 
-        return solve(0, 0, m - 1,n, m, grid, dp);
+                    for (int i = -1; i < 2; i++) {
+                        for(int j = -1; j < 2; j++) {
+                            int ans = 0;
+                            if(c1 == c2){
+                                if(r + 1 < n && c1 + i < m && c2 + j < m && c1 + i >= 0 && c2 + j >= 0)
+                                    ans = grid[r][c1] + dp[r + 1][c1 + i][c2 + j];
+                            }
+                            else{
+                                if(r + 1 < n && c1 + i < m && c2 + j < m && c1 + i >= 0 && c2 + j >= 0)
+                                    ans = grid[r][c1] + grid[r][c2] + dp[r + 1][c1 + i][c2 + j];
+                                else 
+                                    ans += -1e8;
+                            }
+
+                            maxi = max(maxi, ans); 
+                        }
+                    }
+                    dp[r][c1][c2] = maxi;
+                }
+            }
+        }
+        return dp[0][0][m - 1];
     }
 };
