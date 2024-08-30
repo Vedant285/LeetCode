@@ -13,9 +13,21 @@ public:
         }
         return dp[i][c] = pr;
     }
-    int maxProfit(vector<int>& prices) {
-        int n = prices.size();
-        vector<vector<int>> dp(n, vector<int>(2, -1));
-        return solve(0, 0, prices, n, dp);
+    int maxProfit(vector<int>& arr) {
+        int n = arr.size();
+        vector<vector<int>> dp(n + 1, vector<int>(3, 0));
+        for (int i = n - 1; i >= 0; i--) {
+            for (int c = 0; c <= 1; c++) {
+                int pr = 0;
+                if(c == 0) {
+                    pr = max(-arr[i] + dp[i + 1][1], dp[i + 1][0]);
+                }
+                else {
+                    pr = max(arr[i] + dp[i + 1][0], dp[i + 1][1]);
+                }
+                dp[i][c] = pr;
+            }
+        }
+        return dp[0][0];
     }
 };
