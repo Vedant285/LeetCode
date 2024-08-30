@@ -15,19 +15,21 @@ public:
     }
     int maxProfit(vector<int>& arr) {
         int n = arr.size();
-        vector<vector<int>> dp(n + 1, vector<int>(3, 0));
+        //vector<vector<int>> dp(n + 1, vector<int>(3, 0));
+        vector<int> pre(3, 0), curr(3, 0);
         for (int i = n - 1; i >= 0; i--) {
             for (int c = 0; c <= 1; c++) {
                 int pr = 0;
                 if(c == 0) {
-                    pr = max(-arr[i] + dp[i + 1][1], dp[i + 1][0]);
+                    pr = max(-arr[i] + pre[1], pre[0]);
                 }
                 else {
-                    pr = max(arr[i] + dp[i + 1][0], dp[i + 1][1]);
+                    pr = max(arr[i] + pre[0], pre[1]);
                 }
-                dp[i][c] = pr;
+                curr[c] = pr;
             }
+            pre = curr;
         }
-        return dp[0][0];
+        return pre[0];
     }
 };
