@@ -12,20 +12,21 @@ public:
     }
     int maxProfit(vector<int>& prices) {
         n = prices.size();
-        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(3, 0)));
-
+        //vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(3, 0)));
+        vector<vector<int>> pre(2, vector<int>(3, 0)), curr(2, vector<int>(3, 0));
         for(int idx = n - 1; idx >= 0; idx--) {
             for (int canBuy = 0; canBuy <= 1; canBuy++) {
                 for (int cap = 1; cap <= 2; cap++) {
                     if(canBuy) {
-                        dp[idx][canBuy][cap] = max(-prices[idx] + dp[idx + 1][0][cap], dp[idx + 1][1][cap]);
+                        curr[canBuy][cap] = max(-prices[idx] + pre[0][cap], pre[1][cap]);
                     }
                     else
-                        dp[idx][canBuy][cap] = max(prices[idx] + dp[idx + 1][1][cap - 1], dp[idx + 1][0][cap]);
+                        curr[canBuy][cap] = max(prices[idx] + pre[1][cap - 1], pre[0][cap]);
                 }
+                pre = curr;
             }
         }
 
-        return dp[0][1][2];
+        return pre[1][2];
     }
 };
