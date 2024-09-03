@@ -25,7 +25,7 @@ public:
                 {
                     dfs(grid1,grid2,n,m,i,j);
                     if(c)
-                    ans++;
+                        ans++;
                     c=1;
                 }
             }
