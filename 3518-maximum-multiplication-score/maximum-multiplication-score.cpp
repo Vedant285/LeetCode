@@ -17,7 +17,18 @@ public:
     }
     long long maxScore(vector<int>& a, vector<int>& b) {
         int n = a.size(), m = b.size();
-        vector<vector<ll>> dp(n, vector<ll>(m, -1e9));
-        return check(3, b.size() - 1, a, b, dp);
+        vector<vector<ll>> dp(n + 1, vector<ll>(m + 1, -1e9));
+
+        for (int j = 0; j <= m; j++) dp[0][j] = 0;
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                ll take =(a[i - 1]*1LL * b[j - 1]*1LL) + dp[i - 1][j - 1];
+                ll nottake = dp[i][j - 1];
+                dp[i][j] = max(take, nottake);
+            }
+        }
+
+        return dp[n][m];
     }
 };
