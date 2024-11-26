@@ -1,19 +1,12 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        // int n=nums.size();
-        // int ans=(n*(n+1))/2;
-        // long long sum=0;
-        // for(auto it:nums){
-        //     sum+=it;
-        // }
-        // return ans-sum;
+        unordered_set<int>st;
+        for (auto it : nums) st.insert(it);
 
-        int xor1=0,xor2=0;
-        for(int i=0;i<nums.size();i++){
-            xor1^=nums[i];
-            xor2^=(i+1);
+        for (int i = 0; i < nums.size(); i++) {
+            if(st.find(i) == st.end()) return i;
         }
-        return xor1^xor2;
+        return nums.size();
     }
 };
