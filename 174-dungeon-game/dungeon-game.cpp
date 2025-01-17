@@ -1,23 +1,27 @@
 class Solution {
 public:
     int n, m;
-    int solve(int i, int j, vector<vector<int>>& arr, vector<vector<int>>& dp) {
-        if(i >= n || j >= m) return 1e9;
+
+    int calculateMinimumHP(vector<vector<int>>& arr) {
+        n = size(arr);
+        m = size(arr[0]);
         
-        if(i == n - 1 && j == m - 1) {
-            return max(1, 1 - arr[n - 1][m - 1]);
+        vector<vector<int>>dp(n, vector<int>(m, 1e9));
+        
+        dp[n - 1][m - 1] = max(1, 1 - arr[n - 1][m - 1]);
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = m - 1; j >= 0; j--) {
+
+                if(i == n - 1 && j == m - 1) continue;
+
+                int up = (i + 1 < n)?dp[i + 1][j]:1e9;
+                int left = (j + 1 < m)? dp[i][j + 1]:1e9;
+                dp[i][j] = max(1, min(up, left) - arr[i][j]);
+
+            }
         }
-        if(dp[i][j] != -1) return dp[i][j];
-        int up = solve(i + 1, j, arr, dp);
-        int left = solve(i, j + 1, arr, dp);
-        return dp[i][j] = max(1, min(up, left) - arr[i][j]);
 
-    }
-
-    int calculateMinimumHP(vector<vector<int>>& dungeon) {
-        n = size(dungeon);
-        m = size(dungeon[0]);
-        vector<vector<int>>dp(n, vector<int>(m, -1));
-        return solve(0, 0, dungeon, dp);
+        return dp[0][0];
     }
 };
