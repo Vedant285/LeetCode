@@ -1,21 +1,23 @@
 class Solution {
-public:
+public: 
     int change(int amount, vector<int>& arr) {
         int n = arr.size();
-        //vector<vector<long>> dp(n, vector<long>(amount + 1, 0));
-        vector<int> prev(amount + 1, 0);
+        //long long mod = 2e9 + 7;
+        vector<vector<double>>dp(n, vector<double>(amount+1, 0));
+        
         for (int i = 0; i <= amount; i++) {
-            if (i % arr[0] == 0) prev[i] = 1;
+            if(i % arr[0] == 0) dp[0][i] = 1;
         }
 
         for (int i = 1; i < n; i++) {
             for (int t = 0; t <= amount; t++) {
-                int nottake = prev[t];
-                int take = 0;
-                if (arr[i] <= t) take = prev[t - arr[i]];
-                prev[t] = take + nottake;
+                
+                double ta = (arr[i] <= t)? dp[i][t - arr[i]]: 0;
+                double nt = dp[i - 1][t];
+                dp[i][t] = (ta + nt);
             }
         }
-        return prev[amount];
+
+        return (int)dp[n - 1][amount];
     }
 };
