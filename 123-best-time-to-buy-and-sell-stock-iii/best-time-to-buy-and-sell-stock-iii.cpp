@@ -1,32 +1,34 @@
+// class Solution {
+// public:
+//     int n;
+//     int solve(int i, int bos, int trans, vector<int>& prices) {
+//         if(i == n || trans == 2) return 0;
+
+//         if(bos == 0) {
+//             return max(-prices[i]+ solve(i + 1, 1, trans, prices), solve(i + 1, 0, trans, prices));
+//         }
+//         return max(prices[i] + solve(i + 1, 0, trans + 1, prices), solve(i + 1, 1, trans, prices));
+//     } 
+//     int maxProfit(vector<int>& prices) {
+//         n = prices.size();
+//         return solve(0, 0, 0, prices);
+//     }
+// };
+
 class Solution {
 public:
     int n;
-    int solve(int idx, int canBuy, int cap, vector<int>& prices, vector<vector<vector<int>>>& dp) {
-        if(idx == n || cap == 0) return 0;
-        if(dp[idx][canBuy][cap] != -1) return dp[idx][canBuy][cap];
-        if(canBuy) {
-            return dp[idx][canBuy][cap] = max(-prices[idx] + solve(idx + 1, 0, cap,prices, dp), solve(idx + 1, 1, cap, prices, dp));
+    int solve(int i, int bos, int trans, vector<int>& prices, vector<vector<vector<int>>>&dp) {
+        if(i == n || trans == 2) return 0;
+        if(dp[i][bos][trans] != -1) return dp[i][bos][trans];
+        if(bos == 0) {
+            return dp[i][bos][trans] = max(-prices[i]+ solve(i + 1, 1, trans, prices, dp), solve(i + 1, 0, trans, prices, dp));
         }
-        return  dp[idx][canBuy][cap] = max(prices[idx] + solve(idx + 1, 1, cap - 1, prices, dp), solve(idx + 1, 0, cap, prices,dp));
-
-    }
+        return dp[i][bos][trans] = max(prices[i] + solve(i + 1, 0, trans + 1, prices, dp), solve(i + 1, 1, trans, prices, dp));
+    } 
     int maxProfit(vector<int>& prices) {
         n = prices.size();
-        //vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(2, vector<int>(3, 0)));
-        vector<vector<int>> pre(2, vector<int>(3, 0)), curr(2, vector<int>(3, 0));
-        for(int idx = n - 1; idx >= 0; idx--) {
-            for (int canBuy = 0; canBuy <= 1; canBuy++) {
-                for (int cap = 1; cap <= 2; cap++) {
-                    if(canBuy) {
-                        curr[canBuy][cap] = max(-prices[idx] + pre[0][cap], pre[1][cap]);
-                    }
-                    else
-                        curr[canBuy][cap] = max(prices[idx] + pre[1][cap - 1], pre[0][cap]);
-                }
-                pre = curr;
-            }
-        }
-
-        return pre[1][2];
+        vector<vector<vector<int>>>dp(n, vector<vector<int>>(2, vector<int>(2, -1)));
+        return solve(0, 0, 0, prices, dp);
     }
 };
