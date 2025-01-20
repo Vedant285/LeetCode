@@ -1,35 +1,16 @@
 class Solution {
 public:
-    int lowerBounnd(vector<int>& temp, int t) {
-        int n = temp.size();
-        int s = 0, e = n - 1;
-        int ans = n;
-        while (s <= e) {
-            int mid = (s + e)/2;
-            if(temp[mid] >= t) {
-                ans = mid;
-                e = mid - 1;
-            }
-            else {
-                s = mid + 1;
-            }
-        }
-        return ans;
+    int n;
+    int solve(int i, int prev, vector<int>& arr, vector<vector<int>> &dp) {
+        if(i == n) return 0;
+        if(dp[i][prev+ 1] != -1) return dp[i][prev+ 1];
+        int t = (prev == -1 || arr[i] > arr[prev])? 1 + solve(i + 1, i, arr, dp): INT_MIN;
+        int nt = solve(i + 1, prev, arr, dp);
+        return dp[i][prev+ 1] = max(t, nt);
     }
     int lengthOfLIS(vector<int>& nums) {
-        vector<int> temp;
-        int s = 1;
-        temp.push_back(nums[0]);
-        for (int i = 1; i < nums.size(); i++) {
-            if(nums[i] > temp.back()) {
-                temp.push_back(nums[i]);
-                s++;
-            }
-            else {
-                int ind = lowerBounnd(temp, nums[i]);
-                temp[ind] = nums[i];
-            }
-        }
-        return s;
+        n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(n +1, -1));
+        return solve(0, -1,  nums, dp);
     }
 };
