@@ -12,9 +12,15 @@ class Solution {
     }
     
 public:
-    long long mostPoints(vector<vector<int>>& questions) {
-        n = questions.size();
-        vector<ll>dp(n, -1);
-        return solve(0, questions, dp);
+    long long mostPoints(vector<vector<int>>& arr) {
+        n = arr.size();
+        vector<ll>dp(n + 1, 0);
+
+        for (int idx = n - 1; idx >= 0; idx--) {
+            ll nottake = dp[idx + 1];
+            ll take = arr[idx][0] + (idx + arr[idx][1] + 1 < n? dp[idx + arr[idx][1] + 1] : 0);
+            dp[idx] = max(nottake, take);
+        }
+        return dp[0];
     }
 };
