@@ -1,18 +1,21 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        int maxi = 0, l = 0, r = 0, arr[26] = {0};
-        int maxf = 0;
-        while(r < s.size()) {
-            arr[s[r] - 'A'] ++;
-            maxf = max(maxf, arr[s[r] - 'A']);
-            if ((r - l + 1) - maxf > k) {
-                arr[s[l] - 'A']--;
+        vector<int> cnt(26, 0);
+        int l = 0, r = 0, n = s.size();
+        int maxLen = 0;
+        int maxicnt = 0;
+        while (r < n) {
+            cnt[s[r]-'A']++;
+            maxicnt = max(maxicnt, cnt[s[r]-'A']);
+            while (l <= r && (r - l + 1) - maxicnt > k) {
+                cnt[s[l]-'A']--;
                 l++;
             }
-            maxi = max(maxi, r - l + 1);
+
+            maxLen = max(maxLen, r - l + 1);
             r++;
         }
-        return maxi;
+        return maxLen;
     }
 };
