@@ -11,14 +11,15 @@ public:
             mini.push(val);
         }
         else {
-            int minVal = min(mini.top(), val*1LL);
-            mini.push(minVal);
+            if(mini.top() >= val*1LL)
+                mini.push(val);
         }
     }
     
     void pop() {
+
+        if(st.top() == mini.top())mini.pop();
         st.pop();
-        mini.pop();
     }
     
     int top() {
