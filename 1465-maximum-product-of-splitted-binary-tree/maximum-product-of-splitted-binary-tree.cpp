@@ -1,36 +1,21 @@
 class Solution {
 public:
+    vector<long long>temp;
+    int solve(TreeNode* root){
+        if(!root) return 0;
+
+        int l = solve(root->left);
+        int r = solve(root->right);
+        int currsum  = l + r + root->val;
+        temp.push_back(currsum); 
+        return currsum;
+    }
     int maxProduct(TreeNode* root) {
-        
-        vector<TreeNode*> st;
-        st.push_back(root);
-        vector<TreeNode*>post;
-        while (!st.empty()) {
-            TreeNode* it = st.back();
-            st.pop_back();
-            if(it->left) st.push_back(it->left);
-            if(it->right) st.push_back(it->right);
-            post.push_back(it);
-        }
-        vector<long long>temp;
-        unordered_map<TreeNode*, long long>mp;
-        
-        reverse(post.begin(), post.end());
-        for (auto it : post) {
-            long long currsum = it->val;
-            if(it->left) currsum += mp[it->left];
-            if(it->right) currsum += mp[it->right];
-
-            mp[it] = currsum;
-            temp.push_back(currsum);
-        }
-
-
-        long long maxi = 0, totsum = mp[root];
+        long long totsum = solve(root);
+        long long maxi = INT_MIN;
         for (auto &it : temp) {
             long long sum = it * (totsum - it);
-            //maxi = max(maxi, sum);
-            if(sum > maxi) maxi = sum;
+            maxi = max(maxi*1LL, sum);
         }   
         int mod = 1e9 + 7;
         return (int)(maxi%mod);
